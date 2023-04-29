@@ -1,38 +1,33 @@
 package com.sheenhm.cabbagemarket.repository
 
-import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.core.RowMapper
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import javax.persistence.*
 
+@Entity
+@Table(name = "used_items")
 data class UsedItem(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
+
+    @Column(nullable = false)
     val title: String,
-    val imageUrl: String?,
+
+    @Column(name = "image_url")
+    val imageUrl: String? = null,
+
+    @Column(nullable = false)
     val price: Int,
-    val sellerId: Int
-)
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    val seller: Int
+) {
+    constructor() : this(0, "", null, 0, 0)
+}
 
 @Repository
-class UsedItemRepository(private val jdbcTemplate: JdbcTemplate) {
-
-    private val usedItemRowMapper = RowMapper<UsedItem> { rs, _ ->
-        UsedItem(
-            rs.getInt("id"),
-            rs.getString("title"),
-            rs.getString("image_url"),
-            rs.getInt("price"),
-            rs.getInt("seller_id")
-        )
-    }
-
-    fun getItem(): List<UsedItem> {
-        val sql = "SELECT * FROM used_items"
-        return jdbcTemplate.query(sql, usedItemRowMapper)
-    }
-
-    fun sell(title: String, imageUrl: String?, price: Int, sellerId: Int): Boolean {
-        val sql = "INSERT INTO used_items (title, image_url, price, seller_id) VALUES (?, ?, ?, ?)"
-        val count = jdbcTemplate.update(sql, title, imageUrl, price, sellerId)
-        return count == 1
-    }
+interface UsedItemRepository: JpaRepository<UsedItem, Int> {
+    fun findBySellerId(sellerId: Int): List<UsedItem>
 }

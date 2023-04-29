@@ -4,17 +4,15 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
-data class UsedItem(
-    val usedId: String,
-    val title: String,
-    val imageUrl: String,
-    val price: String,
-    val sellerId: String
-)
-
 @RestController
 class SellController {
-
+    data class UsedItem(
+        val usedId: String,
+        val title: String,
+        val imageUrl: String,
+        val price: String,
+        val sellerId: String
+    )
 
     @GetMapping("/getUsed/{userId}")
     fun getUsed(@PathVariable userId: String): List<UsedItem> {
