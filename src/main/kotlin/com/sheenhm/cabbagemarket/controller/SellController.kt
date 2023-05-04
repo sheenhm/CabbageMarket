@@ -1,8 +1,6 @@
 package com.sheenhm.cabbagemarket.controller
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class SellController {
@@ -14,30 +12,24 @@ class SellController {
         val sellerId: String
     )
 
-    @GetMapping("/getUsed/{userId}")
-    fun getUsed(@PathVariable userId: String): List<UsedItem> {
-        return listOf(
-            UsedItem(
-                "1",
-                "ps4pro 팝니다.",
-                "http://gdimg.gmarket.co.kr/2360305459/still/280?ver=1651648538",
-                "300000",
-                "sasimi"
-            ),
-            UsedItem(
-                "2",
-                "ps3 팝니다.",
-                "http://gdimg.gmarket.co.kr/2360305459/still/280?ver=1651648538",
-                "100000",
-                "sasimi"
-            ),
-            UsedItem(
-                "3",
-                "ps2 팝니다.",
-                "http://gdimg.gmarket.co.kr/2360305459/still/280?ver=1651648538",
-                "20000",
-                "sasimi"
-            )
-        )
+    private val usedItems = mutableListOf<UsedItem>()
+
+    @GetMapping("/getUsed/user/{userId}")
+    fun getUsedByUser(@PathVariable userId: String): List<UsedItem> {
+        return usedItems.filter { it.sellerId == userId }
+    }
+
+    @GetMapping("/getUsed/used/{usedId}")
+    fun getUsedByItem(@PathVariable usedId: String): UsedItem? {
+        return usedItems.find { it.usedId == usedId }
+    }
+
+    @PostMapping("/makeUsed/{userId}")
+    fun makeUsed(
+        @PathVariable userId: String,
+        @RequestBody usedItem: UsedItem
+    ): Map<String, String> {
+        usedItems.add(usedItem.copy(usedId = (usedItems.size + 1).toString(), sellerId = userId))
+        return mapOf("status" to "ok")
     }
 }
