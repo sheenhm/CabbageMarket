@@ -1,15 +1,15 @@
 package com.sheenhm.cabbagemarket.repository
 
+import jakarta.persistence.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import javax.persistence.*
 
 @Entity
 @Table(name = "used_items")
 data class UsedItem(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Long,
 
     @Column(nullable = false)
     val title: String,
@@ -18,16 +18,15 @@ data class UsedItem(
     val imageUrl: String? = null,
 
     @Column(nullable = false)
-    val price: Int,
+    val price: Long,
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    val seller: Int
+    @Column(name = "seller_id")
+    val sellerId: Long
 ) {
     constructor() : this(0, "", null, 0, 0)
 }
 
 @Repository
-interface UsedItemRepository: JpaRepository<UsedItem, Int> {
-    fun findBySellerId(sellerId: Int): List<UsedItem>
+interface UsedItemRepository: JpaRepository<UsedItem, Long> {
+    fun findBySellerId(sellerId: Long): List<UsedItem>
 }

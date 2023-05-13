@@ -8,7 +8,7 @@ class SellController {
         val usedId: String,
         val title: String,
         val imageUrl: String,
-        val price: String,
+        val price: Int,
         val sellerId: String
     )
 
