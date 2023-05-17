@@ -1,47 +1,38 @@
 package com.sheenhm.cabbagemarket.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.sheenhm.cabbagemarket.repository.MyInfo
+import com.sheenhm.cabbagemarket.repository.MyInfoRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 class MyInfoController {
-    data class MyInfo(
-        val userId: String,
-        val orderList: List<Int>,
-        val geo: Geo,
-        val name: String,
-        val tel: String
-    )
 
-    data class Geo(
-        val x: Double,
-        val y: Double
-    )
-
-    private val myInfo = mutableListOf<MyInfo>()
+    @Autowired
+    lateinit var myInfoRepository: MyInfoRepository
 
     @GetMapping("/myinfo/{userId}")
-    fun getMyInfo(@PathVariable userId: String): MyInfo? {
-        return myInfo.find { it.userId == userId }
+    fun getMyInfo(@PathVariable userId: String): ResponseEntity<String> {
+        val myInfo = myInfoRepository.findByUserId(userId)
+        return myInfo?.let {
+            val objectMapper = ObjectMapper()
+            val myInfoJson = objectMapper.writeValueAsString(it)
+            ResponseEntity.ok(myInfoJson)
+        } ?: ResponseEntity.notFound().build()
     }
 
     @PutMapping("/myinfo/{userId}/edit")
     fun editMyInfo(@PathVariable userId: String, @RequestBody request: MyInfo): ResponseEntity<String> {
-        val existingInfo = myInfo.find { it.userId == userId }
-            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found")
-
-        val updatedInfo = MyInfo(
-            userId = userId,
-            orderList = existingInfo.orderList,
-            geo = Geo(request.geo.x, request.geo.y),
-            name = request.name,
-            tel = request.tel
-        )
-
-        myInfo.remove(existingInfo)
-        myInfo.add(updatedInfo)
-
-        return ResponseEntity.ok().body("{\"status\": \"ok\"}")
+        val existingInfo = myInfoRepository.findById(userId)
+        return if (existingInfo.isPresent) {
+            val updatedInfo = request.copy(userId = userId)
+            myInfoRepository.save(updatedInfo)
+            ResponseEntity.ok("{\"status\": \"ok\"}")
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found")
+        }
     }
 }
