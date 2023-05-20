@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>우리동네 배추마켓</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>회원정보</h1>
+
+    <h3>ID: <span th:text="${myInfo.userId}"></span></h3>
+    <p>이름: <span th:text="${myInfo.name}"></span></p>
+    <p>연락처: <span th:text="${myInfo.tel}"></span></p>
+    <p>경도(Geo_X): <span th:text="${myInfo.geoX}"></span></p>
+    <p>위도(Geo_Y): <span th:text="${myInfo.geoY}"></span></p>
+
+    <button type="button" th:onclick="'window.location.href=\'' + @{/myinfo/{userId}/edit(userId=${myInfo.userId})} + '\''">회원정보 수정</button>
+</body>
+</html>

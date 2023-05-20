@@ -9,19 +9,20 @@ import org.springframework.stereotype.Repository
 data class MyInfo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     val id: Int,
 
     @Column(nullable = false)
     val userId: String,
 
     @Column(name = "geo_x")
-    val geoX: Double,
+    var geoX: Double,
 
     @Column(name = "geo_y")
-    val geoY: Double,
+    var geoY: Double,
 
-    val name: String,
-    val tel: String
+    var name: String,
+    var tel: String
 ) {
     constructor() : this(0, "", 0.0, 0.0, "", "")
 }
