@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>우리동네 배추마켓</title>
     <meta charset="UTF-8">
+    <title>우리동네 배추마켓</title>
 </head>
 <body>
-<h1>배추마켓 회원가입</h1>
+<h2>회원가입</h2>
+<form action="/register" method="post" th:object="${userInfo}">
+    <label for="userId">사용자 ID:</label>
+    <input type="text" id="userId" name="userId" th:field="*{userId}" required>
+    <span th:if="${error}" style="color: red" th:text="${error}"></span><br><br>
 
-<form method="post" action="/register">
-    <label for="userId">User ID:</label>
-    <input type="text" id="userId" name="userId" required><br>
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" th:field="*{name}" required><br><br>
 
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br>
+    <label for="tel">전화번호:</label>
+    <input type="text" id="tel" name="tel" th:field="*{tel}" required><br><br>
 
-    <label for="tel">Phone:</label>
-    <input type="text" id="tel" name="tel" required><br>
+    <label for="geoX">위도:</label>
+    <input type="text" id="geoX" name="geoX" th:field="*{geoX}" required><br><br>
 
-    <label for="geoX">Location (X):</label>
-    <input type="number" id="geoX" name="geoX" step="any" required><br>
+    <label for="geoY">경도:</label>
+    <input type="text" id="geoY" name="geoY" th:field="*{geoY}" required><br><br>
 
-    <label for="geoY">Location (Y):</label>
-    <input type="number" id="geoY" name="geoY" step="any" required><br>
-
-    <input type="submit" value="회원가입">
+    <button type="submit">가입하기</button>
 </form>
 </body>
 </html>

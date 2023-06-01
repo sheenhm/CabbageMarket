@@ -1,16 +1,13 @@
-package com.sheenhm.cabbagemarket.controller
+package com.sheenhm.cabbagemarket.controller.member
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.sheenhm.cabbagemarket.model.UserInfo
 import com.sheenhm.cabbagemarket.repository.MyInfo
 import com.sheenhm.cabbagemarket.repository.MyInfoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.crossstore.ChangeSetPersister
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.ModelAndView
 
 @Controller
 class MyInfoController {
@@ -28,6 +25,12 @@ class MyInfoController {
         throw ChangeSetPersister.NotFoundException()
     }
 
+    @ResponseBody
+    @GetMapping("/myinfo2/{userId}")    // Json으로 넘겨받기
+    fun getMyInfo2(@PathVariable userId: String, model: Model): MyInfo? {
+        return myInfoRepository.findByUserId(userId)
+    }
+
     @GetMapping("/myinfo/{userId}/edit")
     fun showEditForm(@PathVariable userId: String, model: Model): String {
         val myInfo = myInfoRepository.findByUserId(userId)
@@ -38,17 +41,32 @@ class MyInfoController {
         throw ChangeSetPersister.NotFoundException()
     }
 
-    @PostMapping("/myinfo/{userId}/edit")
-    fun updateMyInfo(@PathVariable userId: String, @ModelAttribute("myInfo") myInfo: MyInfo): String {
+    @PostMapping("/myinfo/{userId}/update")
+    fun modifyMyInfo(@PathVariable userId: String, @ModelAttribute("myInfo") userInfo: UserInfo): String {
         val existingInfo = myInfoRepository.findByUserId(userId)
         if (existingInfo != null) {
-            existingInfo.name = myInfo.name
-            existingInfo.tel = myInfo.tel
-            existingInfo.geoX = myInfo.geoX
-            existingInfo.geoY = myInfo.geoY
+            existingInfo.name = userInfo.name
+            existingInfo.tel = userInfo.tel
+            existingInfo.geoX = userInfo.geoX
+            existingInfo.geoY = userInfo.geoY
             myInfoRepository.save(existingInfo)
             return "redirect:/myinfo/$userId"
         }
         throw ChangeSetPersister.NotFoundException()
+    }
+
+    @GetMapping("/myinfo/{userId}/delete")
+    fun deleteMyInfo(@PathVariable userId: String): String {
+        val existingInfo = myInfoRepository.findByUserId(userId)
+        if (existingInfo != null) {
+            myInfoRepository.delete(existingInfo)
+            return "redirect:/deleted"
+        }
+        throw ChangeSetPersister.NotFoundException()
+    }
+
+    @GetMapping("/deleted")
+    fun deleted(): String {
+        return "deleted"
     }
 }

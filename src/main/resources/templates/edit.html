@@ -7,7 +7,9 @@
 <body>
 <h1>회원정보 변경</h1>
 
-<form th:action="@{/myinfo/{userId}/edit(userId=${myInfo.userId})}" method="post">
+<form th:action="@{/myinfo/{userId}/update(userId=${myInfo.userId})}" method="post">
+    <input type="hidden" id="id" name="id" th:value="${myInfo.id}">
+
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" th:value="${myInfo.name}" required><br><br>
 
@@ -23,5 +25,14 @@
     <button type="submit">수정하기</button>
 </form>
 
+<form th:action="@{/myinfo/{userId}/delete(userId=${myInfo.userId})}" method="get" onsubmit="return confirmDelete();">
+    <button type="submit">회원탈퇴</button>
+</form>
+
+<script>
+        function confirmDelete() {
+            return confirm("정말로 회원탈퇴하시겠습니까?");
+        }
+    </script>
 </body>
 </html>

@@ -10,21 +10,22 @@ data class MyInfo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    val id: Int,
+    var id: Int,
 
     @Column(nullable = false)
-    val userId: String,
+    var userId: String,
+
+    var name: String?,
+
+    var tel: String?,
 
     @Column(name = "geo_x")
-    var geoX: Double,
+    var geoX: Double?,
 
     @Column(name = "geo_y")
-    var geoY: Double,
-
-    var name: String,
-    var tel: String
+    var geoY: Double?
 ) {
-    constructor() : this(0, "", 0.0, 0.0, "", "")
+    constructor() : this(0, "", null,null,null,null)
 }
 
 @Repository
