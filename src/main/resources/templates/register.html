@@ -9,7 +9,7 @@
 <form action="/register" method="post" th:object="${userInfo}">
     <label for="userId">사용자 ID:</label>
     <input type="text" id="userId" name="userId" th:field="*{userId}" required>
-    <span th:if="${error}" style="color: red" th:text="${error}"></span><br><br>
+    <span th:if="${error != null}" style="color: red" th:text="${error}"></span><br><br>
 
     <label for="name">이름:</label>
     <input type="text" id="name" name="name" th:field="*{name}" required><br><br>

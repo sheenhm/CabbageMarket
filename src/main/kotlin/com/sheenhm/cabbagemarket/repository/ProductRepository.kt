@@ -23,13 +23,17 @@ data class ProductInfo(
 
     @Column(nullable = false)
     var price: Int,
+
+    @Column(name = "is_sold")
+    var issold: Int
 ) {
-    constructor() : this(0, "", "", null, 0)
+    constructor() : this(0, "", "", null, 0, 0)
 }
 
 @Repository
 interface ProductRepository: JpaRepository<ProductInfo, String> {
     override fun findAll(): List<ProductInfo>
     fun findByProductId(id: Int): ProductInfo?
+    fun findByTitle(title: String): ProductInfo?
     fun findBySellerId(sellerId: String): ProductInfo?
 }

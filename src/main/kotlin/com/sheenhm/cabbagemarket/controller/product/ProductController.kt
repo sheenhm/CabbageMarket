@@ -1,6 +1,5 @@
 package com.sheenhm.cabbagemarket.controller.product
 
-import com.sheenhm.cabbagemarket.model.UsedInfo
 import com.sheenhm.cabbagemarket.repository.ProductInfo
 import com.sheenhm.cabbagemarket.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,23 +15,23 @@ class ProductController {
     lateinit var productRepository: ProductRepository
 
     @ResponseBody
-    @GetMapping("/product")
+    @GetMapping("/market")
     fun getAll(): List<ProductInfo> {
         return productRepository.findAll().toList()
     }
 
     @ResponseBody
-    @GetMapping("/product/seller/{sellerId}")
+    @GetMapping("/market/seller/{sellerId}")
     fun getBySellerId(@PathVariable sellerId: String, model: Model): ProductInfo? {
         return productRepository.findBySellerId(sellerId)
     }
     @ResponseBody
-    @GetMapping("/product/product/{productId}")
+    @GetMapping("/market/product/{productId}")
     fun getByProductId(@PathVariable productId: Int, model: Model): ProductInfo? {
         return productRepository.findByProductId(productId)
     }
 
-    @GetMapping("/product/product/{productId}/delete")
+    @GetMapping("/market/product/{productId}/delete")
     fun deleteProduct(@PathVariable productId: Int): String {
         val existingProduct = productRepository.findByProductId(productId)
         if (existingProduct != null) {

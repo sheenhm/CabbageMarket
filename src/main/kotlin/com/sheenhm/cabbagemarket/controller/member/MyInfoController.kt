@@ -26,7 +26,7 @@ class MyInfoController {
     }
 
     @ResponseBody
-    @GetMapping("/myinfo2/{userId}")    // Json으로 넘겨받기
+    @GetMapping("/myinfo2/{userId}")    // json으로 넘겨받기
     fun getMyInfo2(@PathVariable userId: String, model: Model): MyInfo? {
         return myInfoRepository.findByUserId(userId)
     }

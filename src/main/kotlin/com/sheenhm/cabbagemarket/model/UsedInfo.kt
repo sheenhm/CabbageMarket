@@ -14,7 +14,8 @@ data class UsedInfo (
             title = this.title,
             sellerId = this.sellerId,
             imageUrl = this.imageUrl,
-            price = this.price
+            price = this.price,
+            issold = 0
         )
     }
 }

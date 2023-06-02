@@ -19,9 +19,10 @@ class RegisterController(private val myInfoRepository: MyInfoRepository) {
     }
 
     @PostMapping("/register")
-    fun register(@ModelAttribute("userInfo") userInfo: UserInfo): String {
+    fun register(@ModelAttribute("userInfo") userInfo: UserInfo, model: Model): String {
         val isUserIdExists = checkUserIdExists(userInfo.userId)
         if (isUserIdExists) {
+            model.addAttribute("error", "이미 존재하는 ID입니다.")
             return "register"
         }
         val myInfo = MyInfo(
