@@ -1,7 +1,9 @@
-package com.sheenhm.cabbagemarket.model
+package com.sheenhm.cabbagemarket.model.dto
 
 import com.sheenhm.cabbagemarket.repository.ProductInfo
+import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(name = "UsedInfo", title = "중고상품 정보(DTO)")
 data class UsedInfo (
     val title: String,
     val sellerId: String,

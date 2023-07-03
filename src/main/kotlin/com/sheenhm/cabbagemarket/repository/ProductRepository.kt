@@ -1,11 +1,13 @@
 package com.sheenhm.cabbagemarket.repository
 
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Entity
 @Table(name = "used_items")
+@Schema(name = "ProductInfo", title = "중고상품 정보")
 data class ProductInfo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +37,5 @@ interface ProductRepository: JpaRepository<ProductInfo, String> {
     override fun findAll(): List<ProductInfo>
     fun findByProductId(id: Int): ProductInfo?
     fun findByTitle(title: String): ProductInfo?
-    fun findBySellerId(sellerId: String): ProductInfo?
+    fun findBySellerId(sellerId: String): List<ProductInfo>
 }

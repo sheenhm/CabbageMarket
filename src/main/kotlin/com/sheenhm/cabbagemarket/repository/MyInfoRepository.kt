@@ -1,11 +1,13 @@
 package com.sheenhm.cabbagemarket.repository
 
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.*
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Entity
 @Table(name = "my_info")
+@Schema(name = "MyInfo", title = "회원 정보")
 data class MyInfo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
